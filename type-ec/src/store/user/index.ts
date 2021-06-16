@@ -1,26 +1,29 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from 'firebase'
+import firebase from "firebase";
+import { itemList } from "@/types";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     drawer: false,
-    user: null
+    user: null,
+    items: []
   },
   mutations: {
     sideNav(state){
       state.drawer = !state.drawer
-      console.log(state.drawer)
     },
 
     setLoginUser(state, user){
       state.user = user
-      console.log(user.uid)
     },
     setLogoutUser(state){
       state.user = null
+    },
+    fetchItem(state,itemArray){
+      state.items = itemArray
     }
   },
   
@@ -42,6 +45,17 @@ export default new Vuex.Store({
     logout(){
       alert("ログアウトしますか？")
       firebase.auth().signOut()
+    },
+    fetchItem({commit}){
+      console.log("actions")
+      firebase.firestore().collection(`items`).get().then(snapshot => {
+        const itemArray:itemList[] = []
+        snapshot.forEach(item => {
+              const  itemData = item.data()
+              itemArray.push(itemData)
+            })
+            commit("fetchItem", itemArray)
+          })
     }
   },
   getters: {

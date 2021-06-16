@@ -4,7 +4,7 @@
       <v-list-item>
         <div><h4>メニュー</h4></div>
       </v-list-item>
-      <v-devider></v-devider>
+      <v-divider></v-divider>
       <div v-if="$store.getters.uid">
         <v-list>
           <v-list-item>
