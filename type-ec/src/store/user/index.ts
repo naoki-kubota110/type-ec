@@ -2,14 +2,20 @@ import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase";
 import { itemList } from "@/types";
-
+import router from "@/router";
 Vue.use(Vuex);
+
+interface sample {
+  type: boolean
+}
 
 export default new Vuex.Store({
   state: {
     drawer: false,
+    flg:true,
     user: null,
-    items: []
+    items: [],
+    toppings:[]
   },
   mutations: {
     sideNav(state){
@@ -23,7 +29,11 @@ export default new Vuex.Store({
       state.user = null
     },
     fetchItem(state,itemArray){
+      console.log("mutations")
       state.items = itemArray
+    },
+    fetchTopping(state,toppingArray){
+      state.toppings = toppingArray
     }
   },
   
@@ -38,6 +48,7 @@ export default new Vuex.Store({
     login(){
       const google_auth_provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(google_auth_provider)
+      router.push("/")
     },
     setLogoutUser({commit}){
       commit("setLogoutUser")
@@ -45,22 +56,33 @@ export default new Vuex.Store({
     logout(){
       alert("ログアウトしますか？")
       firebase.auth().signOut()
+      router.push("/")
     },
     fetchItem({commit}){
       console.log("actions")
       firebase.firestore().collection(`items`).get().then(snapshot => {
-        const itemArray:itemList[] = []
+        const itemArray :Array<itemList> = []
         snapshot.forEach(item => {
-              const  itemData = item.data()
+              const  itemData:itemList = item.data() as itemList
               itemArray.push(itemData)
             })
             commit("fetchItem", itemArray)
           })
+    },
+    fetchToppings({commit}){
+      firebase.firestore().collection(`toppings`).get().then(snapshot => {
+        const toppingArray = []
+        snapshot.forEach(topping => {
+          const toppingData = topping.data()
+          toppingArray.push(toppingData)
+        })
+        commit("fetchTopping", toppingArray)
+      })
     }
   },
   getters: {
     uid: state => state.user? state.user.uid : null,
     userName: state => state.user? state.user.displayName : null,
-    photoURL: state => state.user ? state.user.photoURL : ""
+    photoURL: state => state.user ? state.user.photoURL : null,
   },
 });

@@ -1,18 +1,22 @@
 <template>
 <v-app>
   <v-container>
-    <v-row>
+    <v-main align="center" >
+      <Search/>
+    </v-main>
+    <v-row v-if="flg">
       <v-col cpl="4" v-for="(item,index) in itemBox" :key="index" align="center">
         <v-card id="item" elevation="5">
+               <router-link :to='{name: "ItemDetail", params: {id: item.id}}'>
           <div>
             <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="gray lighten-2"></v-img>
           </div>
-
           <div>
             <v-card-title>
               <p id="itemName">{{item.name}}</p>
             </v-card-title>
           </div>
+               </router-link>
           <v-row>
             <v-spacer></v-spacer>
             <v-col cols="9">
@@ -28,25 +32,34 @@
 </v-app>
 </template>
 
+
 <script lang="ts">
-import { mapActions } from "vuex"
+import {mapGetters } from "vuex"
 import { Component, Vue} from 'vue-property-decorator';
-import firebase from 'firebase'
-import {itemList} from '../types/index'
+import Search from '../components/Search.vue'
+
 
 @Component({
-  created(){
-    this.$store.dispatch("fetchItem")
-    console.log(this.$store.state.items)
+  components:{
+    Search
   },
- computed: {
+  created(){
+    this.$store.state.flg = true
+    this.$store.dispatch("fetchItem")
+    this.$store.dispatch("fetchToppings")
+  },
+  computed: {
    itemBox(){
      return this.$store.state.items;
    },
+   flg(){
+     return this.$store.state.flg
+   }
  }
 
 })
 export default class Home extends Vue{
+  items: []
 }
 </script>
 <style>

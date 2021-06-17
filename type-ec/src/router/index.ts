@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
+import ItemDetail from "../views/ItemDetail.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -10,6 +12,20 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     component: Home,
   },
+  {
+    path: "/item/:id",
+    name: "ItemDetail",
+    component: ItemDetail
+  },
+  {
+    path: "/notfound",
+    name: "NotFound",
+    component: NotFound
+  },
+  {
+    path: "*",
+    redirect: "notfound"
+  }
 ];
 
 const router = new VueRouter({
