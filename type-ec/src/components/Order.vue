@@ -4,10 +4,9 @@
       <v-layout row wrap justify-center>
         <v-flex xs6 mt-6>
           <v-form ref="form" v-model="valid" lazy-validation>
-
             <p class="font-weight-bold text-center"><big>お届け先情報</big></p>
-            <div v-if="user" class="text-center">
-            <v-checkbox label="前回入力情報を呼び出す" color="orange" @change="changeCheck"></v-checkbox>
+            <div v-if="userInfo" >
+              <v-checkbox label="前回の入力情報を呼び出す" color="orange" @change="changeCheck" ></v-checkbox>
             </div>
             <div>
               お名前<v-text-field v-model="name" :rules="[rules.required]"></v-text-field>
@@ -60,12 +59,6 @@
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 @Component({
-  computed:{
-    user(){
-      return this.$store.state.userInfo
-
-    }
-  }
 })
 export default class Order extends Vue{
   private name = ""
@@ -105,14 +98,14 @@ export default class Order extends Vue{
     }
     times = [
       {text:'10時',value:10},
-        {text:'11時',value:11},
-        {text:'12時',value:12},
-        {text:'13時',value:13},
-        {text:'14時',value:14},
-        {text:'15時',value:15},
-        {text:'16時',value:16},
-        {text:'17時',value:17},
-        {text:'18時',value:18},
+      {text:'11時',value:11},
+      {text:'12時',value:12},
+      {text:'13時',value:13},
+      {text:'14時',value:14},
+      {text:'15時',value:15},
+      {text:'16時',value:16},
+      {text:'17時',value:17},
+      {text:'18時',value:18},
     ]
   rules=  {
     required: value => !!value || "※入力必須です",
@@ -185,21 +178,27 @@ export default class Order extends Vue{
         tel : this.tel,
         credit: this.credit
       }
+      let specifyDate = this.date + "-" + String(this.time) + ":" + "00"
       const orderData = {
         orderId: this.$store.getters.orderId,
         id: this.$store.state.cart.id,
         itemInfo: this.$store.getters.cart,
         orderTime: orderTime,
-        status : status
+        status : status,
+        name: this.name,
+        email: this.email,
+        zipcode: this.zipcode,
+        address: this.address,
+        tel : this.tel,
+        credit: this.credit,
+        time: specifyDate,
+        paymentMethod: this.pay
       }
       if(this.$store.getters.userInfo){
-        console.log("adduser")
         this.$store.dispatch("updateUserInfo", userInfoData)
       }else{
-        console.log("newuser")
         this.$store.dispatch("addUserInfo", userInfoData)
       }
-      console.log(orderData)
       this.$store.dispatch("order", orderData)
       this.success = true
       this.$router.push("/ordercomplete")

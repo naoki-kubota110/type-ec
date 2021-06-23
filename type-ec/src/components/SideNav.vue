@@ -50,8 +50,8 @@ import {navItem} from '../types/index'
 export default class SideNav extends Vue{
   loginItems :navItem[] = [
     {name:'ホーム',icon:'mdi-home',link:'/'},
-    {name:'カート',icon:'mdi-cart',link:'/'},
-    {name:'注文履歴',icon:'mdi-playlist-check',link:'/'}
+    {name:'カート',icon:'mdi-cart',link:'/cartitem'},
+    {name:'注文履歴',icon:'mdi-playlist-check',link:'/orderhistory'}
   ]
   logoutItems : navItem[] = [
     {name:'ホーム',icon:'mdi-home',link:'/'},

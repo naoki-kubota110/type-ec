@@ -44,7 +44,7 @@ export default new Vuex.Store({
     fetchTopping(state,toppingArray:toppingList[]){
       state.toppings  = toppingArray
     },
-    fetchCart(state,cartItem){
+    fetchCart(state,cartItem:cart){
       state.cart = cartItem
     },
     newCart(state, cartItem:cart){
@@ -59,16 +59,16 @@ export default new Vuex.Store({
     order(state,orderData:orders[]){
       state.cart = null
     },
-    fetchUserInfo(state,userInfo){
+    fetchUserInfo(state,userInfo:userInfo){
       state.userInfo = userInfo
     },
-    addUserInfo(state,userInfoData){
+    addUserInfo(state,userInfoData:userInfo){
       state.userInfo = userInfoData
     },
-    updateUserInfo(state, userInfoData){
+    updateUserInfo(state, userInfoData:userInfo){
       state.userInfo = userInfoData
     },
-    fetchOrdered(state, orderArray){
+    fetchOrdered(state, orderArray:orders[]){
       state.orders = orderArray
     }
   },
@@ -77,7 +77,7 @@ export default new Vuex.Store({
     sideNav({commit}){
       commit("sideNav")
     },
-
+    //ログイン・ログアウト
     setLoginUser({commit}, user){
       commit("setLoginUser", user)
     },
@@ -94,6 +94,7 @@ export default new Vuex.Store({
       firebase.auth().signOut()
       router.push("/")
     },
+    //アイテム・トッピングの取得
     fetchItem({commit}){
       firebase.firestore().collection(`items`).get().then(snapshot => {
         const itemArray :Array<itemList> = []
@@ -114,6 +115,7 @@ export default new Vuex.Store({
         commit("fetchTopping", toppingArray)
       })
     },
+    //カート機能全般
     fetchCart({commit,getters}){
       if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
@@ -121,9 +123,6 @@ export default new Vuex.Store({
           snapshot.forEach(item => {
             if(item.data().status === 0){
               cartItem = item.data()
-              // if(getters.orderId !== null){
-              //   cartItem.orderId = getters.orderId
-              // }
             }
           })
           commit("fetchCart", cartItem)
@@ -137,13 +136,11 @@ export default new Vuex.Store({
           cartItem.orderId = doc.id
           commit("newCart", cartItem)
           firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${doc.id}`).update(cartItem).then(()=>{
-            console.log(cartItem)
           })
         })
       }
     },
     addCart({commit,getters},addCartItem:cart){
-      console.log("add")
       if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${getters.orderId}`).update(addCartItem).then(() => {
           commit("addCart", addCartItem)
@@ -155,11 +152,13 @@ export default new Vuex.Store({
         commit("deleteCart", deleteItem)
       })
     },
+    //注文実行
     order({commit, getters}, orderData:orders){
       firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${getters.orderId}`).update(orderData).then(()=> {
         commit("order", orderData)
       })
     },
+    //ユーザー情報の追加、取得
     fetchUserInfo({commit,getters}){
       if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/userInfo`).get().then(snapshot => {
@@ -172,14 +171,10 @@ export default new Vuex.Store({
       }
     },
     addUserInfo({commit,getters}, userInfoData:userInfo){
-
-        firebase.firestore().collection(`users/${getters.uid}/userInfo`).add(userInfoData).then(doc=> {
-          userInfoData.id = doc.id
-          console.log(userInfoData)
-          commit("addUserInfo",userInfoData)
-          firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(`${doc.id}`).update(userInfoData).then(()=>{
-            console.log(userInfoData)
-          })
+      firebase.firestore().collection(`users/${getters.uid}/userInfo`).add(userInfoData).then(doc=> {
+        userInfoData.id = doc.id
+        commit("addUserInfo",userInfoData)
+        firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(`${doc.id}`).update(userInfoData).then(()=>{})
         })
     },
     updateUserInfo({commit, getters}, userInfoData:userInfo){
@@ -187,6 +182,8 @@ export default new Vuex.Store({
         commit("updateUserInfo", userInfoData)
       })
     },
+
+    //注文履歴の表示
     fetchOrdered({commit,getters}){
       if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
@@ -207,7 +204,6 @@ export default new Vuex.Store({
     photoURL: (state) => (state.user ? state.user.photoURL : null),
     orderId: (state) => (state.cart? state.cart.orderId : null),
     cart : (state) => (state.cart? state.cart.itemInfo : null),
-    cart2: state => state.cart? state.cart: null,
     userInfo: state => state.userInfo? state.userInfo: null,
     userInfoId :state=> state.userInfo? state.userInfo.id: null
   },
