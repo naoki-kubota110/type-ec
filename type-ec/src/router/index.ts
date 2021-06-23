@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import ItemDetail from "../views/ItemDetail.vue";
 import CartItem from "../views/CartItem.vue";
 import NotFound from "../views/NotFound.vue";
+import OrderComplete from "../views/OrderComplete.vue";
+import OrderHistory from "../views/OrderHistory.vue";
 
 Vue.use(VueRouter);
 
@@ -22,6 +24,16 @@ const routes: Array<RouteConfig> = [
     path: "/cartitem",
     name: "CartItem",
     component: CartItem 
+  },
+  {
+    path: "/ordercomplete",
+    name: "OrderComplete",
+    component: OrderComplete
+  },
+  {
+    path: "/orderhistory",
+    name: "OrderHistory",
+    component: OrderHistory
   },
   {
     path: "/notfound",

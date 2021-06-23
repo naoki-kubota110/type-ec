@@ -163,14 +163,16 @@ export default class Order extends Vue{
         console.log("updateUserInfo")
         this.$store.dispatch("updateUserInfo", userInfoData)
       }else{
-        console.log("newuserInfo")
+        console.log("userInfo")
         this.$store.dispatch("addUserInfo", userInfoData)
       }
 
       this.$store.dispatch("order", orderData)
       this.success = true;
+      this.$router.push("/ordercomplete")
     }else{
       this.success = false;
+      this.$router.push("/cartitem")
     }
   }
 }

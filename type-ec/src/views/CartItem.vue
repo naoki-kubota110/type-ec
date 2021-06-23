@@ -1,10 +1,7 @@
 <template>
 <v-container>
-
-
 <div v-if="cartLength">
 <h1 class="text-center">ショッピングカート</h1>
-
 <v-row>
 <v-simple-table class="mt-5">
     <template v-slot:default>
@@ -65,11 +62,13 @@
 </div>
 </div>
 <div v-else class="text-center">
+  {{orderArray}}
   <h2 class="mt-5">カートに商品がありません</h2>
   <router-link to="/">
   <v-btn v-if="show" color="orange" dark rounded class="mt-5">トップページに戻る</v-btn>
   </router-link>
 </div>
+
 </v-container>
 </template>
 
@@ -82,9 +81,7 @@ import Order from '../components/Order.vue'
     Order
   },
   created(){
-    this.$store.dispatch("fetchItem")
-    this.$store.dispatch("fetchToppings")
-    this.$store.dispatch("fetchOrders")
+    // this.$store.dispatch("fetchOrders")
   },
 computed:{
   itemArray(){
@@ -94,6 +91,9 @@ computed:{
       return "kara"
     }
   },
+  orderArray(){
+    this.$store.state.orders
+  },
   sumPrice(){
     let sum = 0
     this.$store.getters.cart.forEach(item => {
@@ -102,10 +102,12 @@ computed:{
     return sum
   },
   cartLength(){
-    if(this.$store.getters.cart.length !== 0){
-      return true
-    }else{
+    if(this.$store.getters.cart === null){
       return false
+    }else if(this.$store.getters.cart.length === 0){
+      return false
+    }else{
+      return true
     }
   },
   tax(){

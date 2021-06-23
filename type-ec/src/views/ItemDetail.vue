@@ -1,46 +1,34 @@
 <template>
 <v-container>
 <v-layout row rap justify-center>
-    <v-row justify="center" class="ma-1">
+    <v-row justify="center" class="ma-1 mt-5">
         <v-col justify="center" align="center">
             <v-card flat>
                 <img :src="require(`@/assets/img/${itemDetail.imagePath}`)" id="img" class="gray lighten-2" alt="画像" width="400" height="280" justify-center>
             </v-card>
         </v-col>
         <v-col align="left" valign="middle">
-            <h2 class="ma-2">{{itemDetail.name}}</h2><br/>
-            <p>{{itemDetail.description}}</p>
+            <h2 class="ma-2 mt-5">{{itemDetail.name}}</h2><br/>
+            <h4>{{itemDetail.description}}</h4>
         </v-col>
     </v-row>
-    <v-row class="ma-1">
+    <v-row>
         <v-spacer></v-spacer> 
-        <v-col cols="12" justify="center" align="left">
+        <v-col cols="6" justify="center" align="left">
           <v-main valign="middle">
             <h4 style="font-weight : bold">サイズを選択</h4>  
-            <label>
-                <input name="size" type="radio" v-model="size" value="M" checked> 
-                <span> 普通 {{itemDetail.priceM.toLocaleString('ja-JP')}}円</span>  |  
-                <input type="radio" name="size" v-model="size" value="L">
-                <span> 大盛り {{itemDetail.priceL.toLocaleString('ja-JP')}}円</span><br>
-                {{size}}
-            </label><br>
+            <v-radio-group row v-model="size">
+              <v-radio :label="'並盛 : ' + itemDetail.priceM.toLocaleString('ja-JP') + '円'" value="M" color="warning"></v-radio>
+               <v-radio :label="'大盛 : ' + itemDetail.priceL.toLocaleString('ja-JP') + '円'" value="L" color="warning"></v-radio>
+            </v-radio-group>
             <div>
-             <select v-model="selectNum">
-               <span>数量を選択</span>
-                <option disabled value="" >Please select one</option>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-              </select>
-              <span>数量 {{ selectNum}}</span>
+              <h4 style="font-weight : bold">数量を選択</h4>  
+              <v-select :items="items" v-model="selectNum"></v-select>
             </div>
           </v-main>
-            <v-col v-for="(topping,index) in toppings" :key="index" >
-
-
-
-          <input type="checkbox" :value="`${topping.name}`" v-model="checkTopping">
-          <label>{{topping.name}}</label>
+           <h4 style="font-weight : bold">トッピングを選択（各200円）</h4>  
+            <v-col v-for="(topping,index) in toppings" :key="index">
+          <v-checkbox v-model="checkTopping" :label="topping.name" :value="topping.name" color="orange"></v-checkbox>
 
             </v-col>
             <div align="center">
@@ -98,6 +86,18 @@ export default class ItemDetail extends Vue{
   private imagePath = ""
   private selectNum = 1
   public size = ""
+  items = [
+      {text:'1皿',value:1},
+      {text:'2皿',value:2},
+      {text:'3皿',value:3},
+      {text:'4皿',value:4},
+      {text:'5皿',value:5},
+      {text:'6皿',value:6},
+      {text:'7皿',value:7},
+      {text:'8皿',value:8},
+      {text:'9皿',value:9},
+      {text:'10皿',value:10},
+    ]
   private price:number = null
   private checkTopping = []
   private addCart(){
@@ -121,7 +121,6 @@ export default class ItemDetail extends Vue{
       }
     if(this.$store.getters.orderId === null){
       this.$store.dispatch("newCart",cartItem)
-      console.log(cartItem)
     }else{
       const copy = this.$store.getters.cart
       const info = [...copy,cartItem.itemInfo[0]]

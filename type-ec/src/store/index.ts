@@ -24,7 +24,7 @@ export default new Vuex.Store({
     items : [],
     toppings:[],
     cart : "",
-    orders:"",
+    orders:[],
     userInfo: ""
   } as stateType,
   mutations: {
@@ -55,13 +55,15 @@ export default new Vuex.Store({
     },
     order(state,orderData){
       state.cart = ""
-      state.orders = orderData
     },
     addUserInfo(state,userInfoData){
       state.userInfo = userInfoData
     },
     updateUserInfo(state, userInfoData){
       state.userInfo = userInfoData
+    },
+    fetchOrdered(state, orderArray){
+      state.orders = orderArray
     }
   },
   
@@ -120,16 +122,22 @@ export default new Vuex.Store({
           commit("addCart", addCartItem)
         })
       }
-
     },
-    fetchOrders({commit, getters}){
-      if(this.getters.uid){
-        firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=> {
-          snapshot.forEach(order => {
-          })
-        })
-      }
-    },
+    // fetchOrders({commit, getters}){
+    //   if(getters.cart2.status === null){
+    //     console.log("mis")
+    //   }else{
+    //   console.log("fetchorder")
+    //   firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=> {
+    //     const beforeOrder = ""
+    //     snapshot.forEach(order => {
+    //       const orderData = order.data()
+    //     })
+    //     console.log(this.orderData)
+    //     commit("fetchOrders",this.orderData)
+    //   })
+    //   }
+    // },
     deleteCart({commit,getters}, deleteItem){
       firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${getters.orderId}`).update(deleteItem).then(()=> {
         commit("deleteCart", deleteItem)
@@ -151,6 +159,19 @@ export default new Vuex.Store({
       firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(userInfoData.id).update(userInfoData).then(()=> {
         commit("updateUserInfo", userInfoData)
       })
+    },
+    fetchOrdered({commit,getters}){
+      if(getters.uid){
+        firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
+          const orderArray = []
+          snapshot.forEach(order=> {
+            if(order.data().status !== 0){
+              orderArray.push(order.data())
+            }
+          })
+          commit("fetchOrdered",orderArray)
+        })
+      }
     }
   },
   getters: {
@@ -159,6 +180,8 @@ export default new Vuex.Store({
     photoURL: (state) => (state.user ? state.user.photoURL : null),
     orderId: (state) => (state.cart? state.cart.orderId : null),
     cart : (state) => (state.cart? state.cart.itemInfo : null),
-    userInfo: state => state.userInfo? state.userInfo: null
+    cart2: state => state.cart? state.cart: null,
+    userInfo: state => state.userInfo? state.userInfo: null,
+    orders: state => state.orders? state.orders.reverce() : null
   },
 });

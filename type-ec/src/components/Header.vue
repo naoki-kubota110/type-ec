@@ -11,8 +11,8 @@
     <router-link to="/cartitem">
       <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
     </router-link>
-    <router-link to="/cartitem">
-      <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-2 link" outlined>注文履歴</v-btn>
+    <router-link to="/orderhistory">
+      <v-btn  id="btn" retain-focus-on-click text class="mx-2 link" outlined>注文履歴</v-btn>
      </router-link>
     <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-1link" outlined>ログアウト</v-btn>
   </div>
