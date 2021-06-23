@@ -6,6 +6,9 @@
           <v-form ref="form" v-model="valid" lazy-validation>
 
             <p class="font-weight-bold text-center"><big>お届け先情報</big></p>
+            <div v-if="user" class="text-center">
+            <v-checkbox label="前回入力情報を呼び出す" color="orange" @change="changeCheck"></v-checkbox>
+            </div>
             <div>
               お名前<v-text-field v-model="name" :rules="[rules.required]"></v-text-field>
             </div>
@@ -32,13 +35,11 @@
             <div v-if="!dateMsg">
                <small>時間</small>
               <v-select :items="times" v-model="time" :rules="[rules.required]"></v-select>
-              {{time}}
             </div>
             <div>
             <v-radio-group row v-model="pay">
               <v-radio label="代金引換" :value=1 color="warning"></v-radio>
                <v-radio label="クレジットカード" :value=2 color="warning"></v-radio>
-              {{pay}}
             </v-radio-group>
             </div>
             <div v-if="pay === 2">
@@ -59,6 +60,12 @@
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 @Component({
+  computed:{
+    user(){
+      return this.$store.state.userInfo
+
+    }
+  }
 })
 export default class Order extends Vue{
   private name = ""
@@ -130,6 +137,31 @@ export default class Order extends Vue{
       return patternCredit.test(value) || "※クレジッドカード番号はXXXX-XXXX-XXXX-XXXXの形式で入力してください"
     }
   }
+  get userInfo(){
+    return this.$store.state.userInfo
+  }
+  private checkbox = false
+  changeCheck(){
+    this.checkbox = !this.checkbox
+    if(this.checkbox===true){
+      this.name = this.userInfo.name
+      this.email = this.userInfo.email
+      this.zipcode = this.userInfo.zipcode
+      this.address = this.userInfo.address
+      this.tel = this.userInfo.tel
+      this.credit = this.userInfo.credit
+    }else{
+      this.name = ""
+      this.email = ""
+      this.zipcode = ""
+      this.address = ""
+      this.tel = ""
+      this.credit = ""
+    }
+  }
+  created(){
+    this.$store.dispatch("fetchUserInfo")
+  }
   orderBtn(){
     if(this.$refs.form.validate() && this.dateMsg===""){
       const orderDay = new Date()
@@ -161,8 +193,10 @@ export default class Order extends Vue{
         status : status
       }
       if(this.$store.getters.userInfo){
+        console.log("adduser")
         this.$store.dispatch("updateUserInfo", userInfoData)
       }else{
+        console.log("newuser")
         this.$store.dispatch("addUserInfo", userInfoData)
       }
       console.log(orderData)

@@ -45,6 +45,7 @@ export default class Home extends Vue{
     this.$store.state.flg = true
     this.$store.dispatch("fetchItem")
     this.$store.dispatch("fetchToppings")
+    this.$store.dispatch("fetchCart")
   }
   get itemBox(){
     return this.$store.state.items;

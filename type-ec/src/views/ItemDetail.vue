@@ -56,6 +56,7 @@ import { newCart,addCart } from "@/types";
   created(){
     this.$store.dispatch("fetchItem")
     this.$store.dispatch("fetchToppings")
+    this.$store.dispatch("fetchCart")
   },
   computed:{
     itemDetail(){
@@ -121,7 +122,7 @@ export default class ItemDetail extends Vue{
     if(this.$store.getters.uid === null){
       alert("ログインしてください")
       this.$store.dispatch("login")
-    }else if(this.$store.getters.orderId === null){
+    }else if(this.$store.state.cart === null){
       console.log("new")
       this.$store.dispatch("newCart",cartItem)
     }else{

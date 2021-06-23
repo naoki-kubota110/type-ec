@@ -59,6 +59,9 @@ export default new Vuex.Store({
     order(state,orderData:orders[]){
       state.cart = null
     },
+    fetchUserInfo(state,userInfo){
+      state.userInfo = userInfo
+    },
     addUserInfo(state,userInfoData){
       state.userInfo = userInfoData
     },
@@ -118,11 +121,11 @@ export default new Vuex.Store({
           snapshot.forEach(item => {
             if(item.data().status === 0){
               cartItem = item.data()
-              
+              // if(getters.orderId !== null){
+              //   cartItem.orderId = getters.orderId
+              // }
             }
           })
-          cartItem.orderId = getters.orderId
-          console.log(cartItem)
           commit("fetchCart", cartItem)
         })
       }
@@ -133,6 +136,9 @@ export default new Vuex.Store({
         firebase.firestore().collection(`users/${getters.uid}/orders`).add(cartItem).then(doc=>{
           cartItem.orderId = doc.id
           commit("newCart", cartItem)
+          firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${doc.id}`).update(cartItem).then(()=>{
+            console.log(cartItem)
+          })
         })
       }
     },
@@ -154,15 +160,30 @@ export default new Vuex.Store({
         commit("order", orderData)
       })
     },
+    fetchUserInfo({commit,getters}){
+      if(getters.uid){
+        firebase.firestore().collection(`users/${getters.uid}/userInfo`).get().then(snapshot => {
+          let userInfo = null
+          snapshot.forEach(data => {
+            userInfo = data.data()
+          })
+          commit("fetchUserInfo",userInfo)
+        })
+      }
+    },
     addUserInfo({commit,getters}, userInfoData:userInfo){
 
         firebase.firestore().collection(`users/${getters.uid}/userInfo`).add(userInfoData).then(doc=> {
           userInfoData.id = doc.id
+          console.log(userInfoData)
           commit("addUserInfo",userInfoData)
+          firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(`${doc.id}`).update(userInfoData).then(()=>{
+            console.log(userInfoData)
+          })
         })
     },
     updateUserInfo({commit, getters}, userInfoData:userInfo){
-      firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(userInfoData.id).update(userInfoData).then(()=> {
+      firebase.firestore().collection(`users/${getters.uid}/userInfo`).doc(`${getters.userInfoId}`).update(userInfoData).then(()=> {
         commit("updateUserInfo", userInfoData)
       })
     },
@@ -188,5 +209,6 @@ export default new Vuex.Store({
     cart : (state) => (state.cart? state.cart.itemInfo : null),
     cart2: state => state.cart? state.cart: null,
     userInfo: state => state.userInfo? state.userInfo: null,
+    userInfoId :state=> state.userInfo? state.userInfo.id: null
   },
 });

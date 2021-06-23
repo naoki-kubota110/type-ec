@@ -82,9 +82,7 @@ export default class CartItem extends Vue{
   }
   
   get itemArray(){
-    if(this.$store.getters.cart !== null && this.$store.state.cart.status === 0){
       return this.$store.getters.cart
-    }
   }
   get cartLength(){
     if(this.$store.getters.cart === null){
