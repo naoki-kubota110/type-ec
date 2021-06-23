@@ -4,12 +4,12 @@
     <v-row justify="center" class="ma-1 mt-5">
         <v-col justify="center" align="center">
             <v-card flat>
-                <img :src="require(`@/assets/img/${itemDetail.imagePath}`)" id="img" class="gray lighten-2" alt="画像" width="400" height="280" justify-center>
+              <img :src="require(`@/assets/img/${itemDetail.imagePath}`)" id="img">
             </v-card>
         </v-col>
         <v-col align="left" valign="middle">
-            <h2 class="ma-2 mt-5">{{itemDetail.name}}</h2><br/>
-            <h4>{{itemDetail.description}}</h4>
+          <h2 class="ma-2 mt-5">{{itemDetail.name}}</h2><br/>
+          <h4>{{itemDetail.description}}</h4>
         </v-col>
     </v-row>
     <v-row>
@@ -27,27 +27,26 @@
             </div>
           </v-main>
            <h4 style="font-weight : bold">トッピングを選択（各200円）</h4>  
-            <v-col v-for="(topping,index) in toppings" :key="index">
-          <v-checkbox v-model="checkTopping" :label="topping.name" :value="topping.name" color="orange"></v-checkbox>
-
-            </v-col>
+            <div id="checkbox">
+              <div v-for="(topping,index) in toppings" :key="index" id="check">
+               <v-checkbox v-model="checkTopping" :label="topping.name" :value="topping.name" color="orange" id="check"></v-checkbox>
+              </div>
+             </div>
             <div align="center">
-                <h2>ご注文金額合計：{{size === "M"?
-                  (itemDetail.priceM * selectNum) + (this.checkTopping.length * 200)
-                   :
-                   (itemDetail.priceL * selectNum) + (this.checkTopping.length * 200)
-                   }}円(税込)</h2>
-                     <router-link :to="{name: 'CartItem'}">
-
-                <v-btn color="orange" dark @click="addCart"><strong>カートに入れる</strong></v-btn>
-                     </router-link>
+              <h2>ご注文金額合計：{{size === "M"?
+                (itemDetail.priceM * selectNum) + (this.checkTopping.length * 200)
+                  :
+                  (itemDetail.priceL * selectNum) + (this.checkTopping.length * 200)
+                  }}円(税込)</h2>
+              <router-link :to="{name: 'CartItem'}" id="router">
+                <v-btn color="orange" dark @click="addCart" class="mb-5 mt-3">カートに入れる</v-btn>
+              </router-link>
             </div>
         </v-col>
     </v-row>
 </v-layout>
 </v-container>
 </template>
-
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
@@ -85,7 +84,7 @@ export default class ItemDetail extends Vue{
   private itemName = ""
   private imagePath = ""
   private selectNum = 1
-  public size = ""
+  public size = "M"
   items = [
       {text:'1皿',value:1},
       {text:'2皿',value:2},
@@ -119,9 +118,14 @@ export default class ItemDetail extends Vue{
         toppings : this.checkTopping
         }]
       }
-    if(this.$store.getters.orderId === null){
+    if(this.$store.getters.uid === null){
+      alert("ログインしてください")
+      this.$store.dispatch("login")
+    }else if(this.$store.getters.orderId === null){
+      console.log("new")
       this.$store.dispatch("newCart",cartItem)
     }else{
+      console.log("add")
       const copy = this.$store.getters.cart
       const info = [...copy,cartItem.itemInfo[0]]
       const addCartItem:addCart = {
@@ -132,7 +136,29 @@ export default class ItemDetail extends Vue{
       }
       this.$store.dispatch("addCart", addCartItem)
     }
-
   }
 }
 </script>
+<style>
+#checkbox{
+  display:flex !important;
+  width: 100%;
+  flex-wrap: wrap;
+}
+#check{
+  width: 180px;
+}
+</style>
+    // if(this.$store.getters.orderId === null){
+    //   this.$store.dispatch("newCart",cartItem)
+    // }else{
+    //   const copy = this.$store.getters.cart
+    //   const info = [...copy,cartItem.itemInfo[0]]
+    //   const addCartItem:addCart = {
+    //     id: this.$store.state.cart.id,
+    //     orderId: this.$store.getters.orderId,
+    //     status: 0,
+    //     itemInfo: info
+    //   }
+    //   this.$store.dispatch("addCart", addCartItem)
+    // }

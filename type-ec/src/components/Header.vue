@@ -4,22 +4,19 @@
     <v-icon>mdi-menu</v-icon>
   </v-app-bar-nav-icon>
   <v-toolbar-title>
-    <router-link to="/"><p>らくらくカレー</p></router-link>
+    <router-link to="/" id="router"><p>らくらくカレー</p></router-link>
   </v-toolbar-title>
   <v-spacer></v-spacer>
   <div v-if="$store.getters.uid">
-    <router-link to="/cartitem">
+    <router-link to="/cartitem" id="router">
       <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
     </router-link>
-    <router-link to="/orderhistory">
+    <router-link to="/orderhistory" id="router">
       <v-btn  id="btn" retain-focus-on-click text class="mx-2 link" outlined>注文履歴</v-btn>
      </router-link>
     <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-1link" outlined>ログアウト</v-btn>
   </div>
   <div v-else>
-    <router-link to="cartitem">
-      <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
-    </router-link>
     <v-btn @click="login" id="btn" retain-focus-on-click text class="mx-1 link" outlined>ログイン</v-btn>
   </div>
 </v-app-bar>

@@ -4,19 +4,19 @@
     <v-main align="center">
       <Search/>
     </v-main>
-    <v-row v-if="flg">
+    <v-row v-if="flg" class="mt-5">
       <v-col cpl="4" v-for="(item,index) in itemBox" :key="index" align="center">
         <v-card id="item" elevation="5">
-               <router-link :to='{name: "ItemDetail", params: {id: item.id}}'>
-          <div>
-            <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="gray lighten-2"></v-img>
-          </div>
-          <div>
-            <v-card-title>
-              <p id="itemName">{{item.name}}</p>
-            </v-card-title>
-          </div>
-               </router-link>
+          <router-link :to='{name: "ItemDetail", params: {id: item.id}}' id="router">
+            <div>
+              <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="gray lighten-2"></v-img>
+            </div>
+            <div>
+              <v-card-title>
+                <p id="itemName">{{item.name}}</p>
+              </v-card-title>
+            </div>
+          </router-link>
           <v-row>
             <v-spacer></v-spacer>
             <v-col cols="9">
@@ -32,34 +32,29 @@
 </v-app>
 </template>
 
-
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 import Search from '../components/Search.vue'
-
-
 @Component({
   components:{
     Search
   },
+})
+export default class Home extends Vue{
   created(){
     this.$store.state.flg = true
     this.$store.dispatch("fetchItem")
     this.$store.dispatch("fetchToppings")
-  },
-  computed: {
-   itemBox(){
-     return this.$store.state.items;
-   },
-   flg(){
-     return this.$store.state.flg
-   }
- }
-
-})
-export default class Home extends Vue{
+  }
+  get itemBox(){
+    return this.$store.state.items;
+  }
+  get flg(){
+    return this.$store.state.flg
+  }
 }
 </script>
+
 <style>
 #img{
  height:200px;
@@ -86,5 +81,8 @@ export default class Home extends Vue{
 }
 #itemName:hover{
   color:orange;
+}
+#router{
+   text-decoration: none;
 }
 </style>

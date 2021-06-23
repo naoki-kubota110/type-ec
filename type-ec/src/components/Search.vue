@@ -23,11 +23,9 @@
       </v-col>
   </v-row>
   <v-row v-if="showSearchItem">
-
-  <v-col  cpl="4" v-for="(item,index) in searchBox" :key="index" align="center">
+    <v-col  cpl="4" v-for="(item,index) in searchBox" :key="index" align="center">
         <v-card id="item" elevation="5">
-          <router-link :to='{name: "ItemDetail", params: {id: item.id}}'>
-
+          <router-link :to='{name: "ItemDetail", params: {id: item.id}}' id="router">
           <div>
             <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="gray lighten-2"></v-img>
           </div>
@@ -52,23 +50,21 @@
 </template>
 
 <script lang="ts">
-import {mapGetters } from "vuex"
 import { Component, Vue} from 'vue-property-decorator';
-import { itemList,toppingList } from "@/types";
+import { itemList} from "@/types";
 
 @Component({
-  computed:{
-    searchBox(){
-      return this.searchItem
-    }
-  },
 })
 export default class Search extends Vue{
-  search_term = ""
-  show = false
-  errosMsg = ""
-  showSearchItem = false
-  searchItem:itemList[] = []
+  private search_term = ""
+  private show = false
+  private errosMsg = ""
+  private showSearchItem = false
+  private searchItem:itemList[] = []
+  get searchBox(){
+    return this.searchItem
+  }
+
   searchBtn():void{
     const defaultItems = this.$store.state.items
     const searchFilter :itemList[] = defaultItems.filter((item :any) => {
@@ -99,32 +95,3 @@ export default class Search extends Vue{
   }
 }
 </script>
-
-<style>
-#img{
- height:200px;
- width:300px;
- border-bottom: solid 0.5px gray;
- border-radius:10px 10px 0 0;
- background-color: white;
-}
-#item{
-  height:325px;
-  width:300px;
-  border-radius: 10px;
-  border: solid 0.5px gray;
-  background-color: antiquewhite;
-}
-#price{
-  font-size: 25px;
-}
-#itemName{
-  color:black;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight:bold;
-}
-#itemName:hover{
-  color:orange;
-}
-</style>

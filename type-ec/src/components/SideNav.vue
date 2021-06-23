@@ -38,7 +38,6 @@
   </v-navigation-drawer>
 </template>
 
-
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 import { mapGetters } from "vuex"
@@ -56,8 +55,6 @@ export default class SideNav extends Vue{
   ]
   logoutItems : navItem[] = [
     {name:'ホーム',icon:'mdi-home',link:'/'},
-    {name:'カート',icon:'mdi-cart',link:'/'},
   ]
 }
-
 </script>

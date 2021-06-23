@@ -26,7 +26,7 @@ export interface itemInfo{
   num: number,
   size: string,
   imagePath: string,
-  toppings: any[]
+  toppings: string[]
 }
 
 export interface newCart{
@@ -40,4 +40,27 @@ export interface addCart{
   orderId:string,
   status: number,
   itemInfo:itemInfo[]
+}
+export interface cart{
+  id: string,
+  itemInfo:itemInfo[],
+  orderId:string,
+  status: number
+}
+export interface orders{
+  id: string,
+  itemInfo:itemInfo[],
+  orderId:string,
+  status: number,
+  orderTime: string
+}
+
+export interface userInfo{
+  id: string,
+  address: string,
+  credit: string,
+  email: string,
+  name: string,
+  tel: string,
+  zipcode:string
 }

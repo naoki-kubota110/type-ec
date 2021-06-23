@@ -71,6 +71,7 @@ export default class Order extends Vue{
     private credit = ""
     private valid = true
     private time =null
+    private success = true
     private today = new Date()
     private year = this.today.getFullYear()
     private month = this.today.getMonth() + 1
@@ -160,15 +161,13 @@ export default class Order extends Vue{
         status : status
       }
       if(this.$store.getters.userInfo){
-        console.log("updateUserInfo")
         this.$store.dispatch("updateUserInfo", userInfoData)
       }else{
-        console.log("userInfo")
         this.$store.dispatch("addUserInfo", userInfoData)
       }
-
+      console.log(orderData)
       this.$store.dispatch("order", orderData)
-      this.success = true;
+      this.success = true
       this.$router.push("/ordercomplete")
     }else{
       this.success = false;
