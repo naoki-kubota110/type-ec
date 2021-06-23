@@ -1,7 +1,7 @@
 <template>
 <v-app>
   <v-container>
-    <v-main align="center" >
+    <v-main align="center">
       <Search/>
     </v-main>
     <v-row v-if="flg">
@@ -34,7 +34,6 @@
 
 
 <script lang="ts">
-import {mapGetters } from "vuex"
 import { Component, Vue} from 'vue-property-decorator';
 import Search from '../components/Search.vue'
 
@@ -59,7 +58,6 @@ import Search from '../components/Search.vue'
 
 })
 export default class Home extends Vue{
-  items: []
 }
 </script>
 <style>

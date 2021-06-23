@@ -54,11 +54,9 @@
 <script lang="ts">
 import {mapGetters } from "vuex"
 import { Component, Vue} from 'vue-property-decorator';
+import { itemList,toppingList } from "@/types";
 
 @Component({
-  methods: {
-    ...mapGetters(["x"])
-  },
   computed:{
     searchBox(){
       return this.searchItem
@@ -70,10 +68,10 @@ export default class Search extends Vue{
   show = false
   errosMsg = ""
   showSearchItem = false
-  searchItem = []
-  searchBtn(){
+  searchItem:itemList[] = []
+  searchBtn():void{
     const defaultItems = this.$store.state.items
-    const searchFilter = defaultItems.filter((item) => {
+    const searchFilter :itemList[] = defaultItems.filter((item :any) => {
       return 0 <= String(item.name).indexOf(this.search_term)
     })
     if(this.search_term === ""){
@@ -84,17 +82,14 @@ export default class Search extends Vue{
       this.errosMsg = "該当商品が見つかりません"
       this.show = true
       this.searchItem = defaultItems
-      // this.searchItem = searchFilter
-      // console.log(this.searchItem)
-      // this.show = false
     }else{
       this.searchItem = searchFilter
       this.showSearchItem = true
-      this.$store.state.flg = false
+      this.$store.state.flg= false
       this.show = false
     }
   }
-  removeBtn(){
+  removeBtn():void{
     this.showSearchItem = false
     this.search_term = ""
     this.$store.state.flg = true

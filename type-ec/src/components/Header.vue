@@ -8,21 +8,25 @@
   </v-toolbar-title>
   <v-spacer></v-spacer>
   <div v-if="$store.getters.uid">
-
-  <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
-     <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-2 link" outlined>注文履歴</v-btn>
-   <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-1link" outlined>ログアウト</v-btn>
+    <router-link to="/cartitem">
+      <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
+    </router-link>
+    <router-link to="/cartitem">
+      <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-2 link" outlined>注文履歴</v-btn>
+     </router-link>
+    <v-btn @click="logout" id="btn" retain-focus-on-click text class="mx-1link" outlined>ログアウト</v-btn>
   </div>
   <div v-else>
-    <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
-   <v-btn @click="login" id="btn" retain-focus-on-click text class="mx-1 link" outlined>ログイン</v-btn>
+    <router-link to="cartitem">
+      <v-btn text retain-focus-on-click><v-icon>mdi-cart</v-icon></v-btn>
+    </router-link>
+    <v-btn @click="login" id="btn" retain-focus-on-click text class="mx-1 link" outlined>ログイン</v-btn>
   </div>
 </v-app-bar>
 </template>
 
 <script lang="ts">
 import { mapActions } from "vuex"
-import { Action } from 'vuex-class'
 import { Component, Vue} from 'vue-property-decorator';
 import firebase from 'firebase'
 
