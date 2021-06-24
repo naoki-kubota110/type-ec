@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item,index) in itemArray" :key="index">
+          <tr v-for="(item,index) in cartInfo" :key="index">
             <td class="text-center"> 
               <img :src="require(`@/assets/img/${item.imagePath}`)" id="img">
             </td>
@@ -58,7 +58,7 @@
   </div>
 
   <div v-else class="text-center">
-    <h2 class="mt-5">カートに商品がありません</h2>
+    <h2 class="mt-5">カートに商品がありません{{itemArray}}</h2>
     <router-link to="/" id="router">
       <v-btn color="orange" dark rounded class="mt-5">トップページに戻る</v-btn>
     </router-link>
@@ -69,6 +69,7 @@
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 import Order from '../components/Order.vue'
+import firebase from 'firebase'
 @Component({
   components: {
     Order
@@ -78,12 +79,28 @@ export default class CartItem extends Vue{
   private showorder = false
 
   created(){
-    this.$store.dispatch("fetchCart")
+  //   firebase.auth().onAuthStateChanged(user=> {
+  //     if(user){
+  //       console.log(user)
+  //       this.$store.dispatch("setLoginUser",user)
+  //     }else{
+  //       this.$store.dispatch("setLogoutUser",user)
+  //     }
+  //   })
+  //  this.$store.dispatch("fetchCart",this.userId)
   }
-  
+
   get itemArray(){
-      return this.$store.getters.cart
+    // this.$store.dispatch("fetchCart")
+    this.$store.dispatch("fetchCart")
+    if(this.$store.getters.uid !== null){
+      return ""
+    }
   }
+  get cartInfo(){
+    return this.$store.getters.cart
+  }
+
   get cartLength(){
     if(this.$store.getters.cart === null){
       return false

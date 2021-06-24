@@ -33,6 +33,7 @@ export default new Vuex.Store({
       state.drawer = !state.drawer
     },
     setLoginUser(state, user){
+      console.log("setlogin")
       state.user = user
     },
     setLogoutUser(state){
@@ -96,7 +97,8 @@ export default new Vuex.Store({
     },
     //アイテム・トッピングの取得
     fetchItem({commit}){
-      firebase.firestore().collection(`items`).get().then(snapshot => {
+      firebase.firestore().collection(`items`).get().then
+      (snapshot => {
         const itemArray :Array<itemList> = []
         snapshot.forEach(item => {
               const  itemData:itemList = item.data() as itemList
@@ -117,17 +119,20 @@ export default new Vuex.Store({
     },
     //カート機能全般
     fetchCart({commit,getters}){
-      if(getters.uid){
+      // const user = firebase.auth().currentUser
         firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
           let cartItem = null
+          console.log(snapshot)
           snapshot.forEach(item => {
+            console.log("items")
             if(item.data().status === 0){
+              console.log(item.data())
               cartItem = item.data()
             }
           })
+          console.log(cartItem)
           commit("fetchCart", cartItem)
         })
-      }
     },
     newCart({commit,getters,state}, cartItem:cart){
       console.log("new")

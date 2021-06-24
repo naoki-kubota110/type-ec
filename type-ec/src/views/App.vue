@@ -20,7 +20,7 @@ import SideNav from '../components/SideNav.vue'
     Header,
     Footer,
     SideNav
-  }
+  },
 })
 export default class App extends Vue{
 }
