@@ -4,40 +4,43 @@
   <h1 class="text-center">ショッピングカート</h1>
   <v-simple-table class="mt-5">
       <template v-slot:default>
-        <thead>
+        <thead id="thead">
           <tr>
-            <th class="text-center">商品イメージ</th>
-            <th class="text-center">商品名</th>
-            <th class="text-center">サイズ</th>
-            <th class="text-center">個数</th>
-            <th class="text-center">価格（税込）</th>
-            <th class="text-center">トッピング（各200円）</th>
-            <th class="text-center">小計（税込）</th>
-            <th class="text-center">ー</th>
+            <th class="text-center"><big>商品イメージ</big></th>
+            <th class="text-center"><big>商品名</big></th>
+            <th class="text-center"><big>サイズ</big></th>
+            <th class="text-center"><big>個数</big></th>
+            <th class="text-center"><big>価格（税込）</big></th>
+            <th class="text-center"><big>トッピング</big></th>
+            <th class="text-center"><big>小計（税込）</big></th>
+            <th class="text-center"><big>ー</big></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item,index) in cartInfo" :key="index">
             <td class="text-center"> 
-              <img :src="require(`@/assets/img/${item.imagePath}`)" id="img">
+              <img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="mt-3 mb-3">
             </td>
             <td class="text-center">{{ item.name }}</td>
             <td class="text-center">
-              {{item.size === "M"? "並盛":"大盛り" }}
+              {{item.size === "M"? "Short":"Venti" }}
             </td>
             <td class="text-center">
-              {{ item.num }}皿
+              {{ item.num }}杯
             </td>
             <td class="text-center">
-              {{ item.price.toLocaleString('ja-JP') }}円
+              {{ item.price}}円
             </td>
             <td class="text-center">
               <div v-for="(topping,index) in item.toppings" :key="index">
-                {{topping}}
+              {{ item.toppings.length !==0 ? topping : '無し'}}
               </div>
             </td>
             <td class="text-center">
-              {{ item.toppings.length !==0 ? ((item.price * item.num) + (200 * item.toppings.length * item.num)).toLocaleString('ja-JP') : (item.price * item.num).toLocaleString('ja-JP')}}円
+              {{ item.toppings.length !==0 ? 
+              ((item.price * item.num) + (50 * item.toppings.length * item.num)).toLocaleString('ja-JP')
+               : 
+               (item.price * item.num).toLocaleString('ja-JP')}}円
             </td>
             <td class="text-center">
               <v-btn @click="deleteCart(index)">削除</v-btn>
@@ -49,18 +52,17 @@
     <div align="center" class="mt-5">
         <h2>内消費税：{{tax.toLocaleString('ja-JP')}}円</h2>
         <h2>ご注文金額合計：{{sumPrice.toLocaleString('ja-JP')}}円(税込)</h2>
-        <v-btn class="mt-5" v-if="!showorder" color="orange" dark rounded href="#orderForm" @click="showOrder">注文に進む</v-btn>
-        <v-btn v-if="showorder" rounded color="orange" dark class="mt-5" @click="showOrder">閉じる</v-btn>
+        <v-btn class="mt-5" v-if="!showorder" color="#0d5c35" dark rounded href="#orderForm" @click="showOrder">注文に進む</v-btn>
+        <v-btn v-if="showorder" rounded color="#0d5c35" dark class="mt-5" @click="showOrder">閉じる</v-btn>
     </div>
     <div v-show="showorder">
       <Order/>
     </div>
   </div>
-
   <div v-else class="text-center">
     <h2 class="mt-5">カートに商品がありません{{itemArray}}</h2>
     <router-link to="/" id="router">
-      <v-btn color="orange" dark rounded class="mt-5">トップページに戻る</v-btn>
+      <v-btn color="#0d5c35" dark rounded class="mt-5">トップページに戻る</v-btn>
     </router-link>
   </div>
 </v-container>
@@ -100,7 +102,6 @@ export default class CartItem extends Vue{
   get cartInfo(){
     return this.$store.getters.cart
   }
-
   get cartLength(){
     if(this.$store.getters.cart === null){
       return false
@@ -113,7 +114,7 @@ export default class CartItem extends Vue{
   get sumPrice(){
     let sum = 0
     this.$store.getters.cart.forEach(item => {
-      sum += ((item.price * Number(item.num)) + (item.toppings.length * 200 * item.num))
+      sum += ((item.price * Number(item.num)) + (item.toppings.length * 50 * item.num))
     })
     return sum
   }
@@ -136,3 +137,8 @@ export default class CartItem extends Vue{
   }
 }
 </script>
+<style scoped>
+#thead{
+  background: #DDDDDD;
+}
+</style>

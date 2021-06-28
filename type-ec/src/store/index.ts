@@ -33,7 +33,6 @@ export default new Vuex.Store({
       state.drawer = !state.drawer
     },
     setLoginUser(state, user){
-      console.log("setlogin")
       state.user = user
     },
     setLogoutUser(state){
@@ -97,6 +96,7 @@ export default new Vuex.Store({
     },
     //アイテム・トッピングの取得
     fetchItem({commit}){
+      console.log("action")
       firebase.firestore().collection(`items`).get().then
       (snapshot => {
         const itemArray :Array<itemList> = []
@@ -122,15 +122,11 @@ export default new Vuex.Store({
       // const user = firebase.auth().currentUser
         firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
           let cartItem = null
-          console.log(snapshot)
           snapshot.forEach(item => {
-            console.log("items")
             if(item.data().status === 0){
-              console.log(item.data())
               cartItem = item.data()
             }
           })
-          console.log(cartItem)
           commit("fetchCart", cartItem)
         })
     },
@@ -160,6 +156,7 @@ export default new Vuex.Store({
     //注文実行
     order({commit, getters}, orderData:orders){
       firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${getters.orderId}`).update(orderData).then(()=> {
+        console.log(orderData)
         commit("order", orderData)
       })
     },
@@ -190,7 +187,6 @@ export default new Vuex.Store({
 
     //注文履歴の表示
     fetchOrdered({commit,getters}){
-      if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/orders`).get().then(snapshot=>{
           const orderArray = []
           snapshot.forEach(order=> {
@@ -200,13 +196,13 @@ export default new Vuex.Store({
           })
           commit("fetchOrdered",orderArray)
         })
-      }
     }
   },
   getters: {
     uid: (state) => (state.user? state.user.uid : null),
     userName: (state) => (state.user? state.user.displayName : null),
     photoURL: (state) => (state.user ? state.user.photoURL : null),
+    flg: state => state.flg,
     orderId: (state) => (state.cart? state.cart.orderId : null),
     cart : (state) => (state.cart? state.cart.itemInfo : null),
     userInfo: state => state.userInfo? state.userInfo: null,

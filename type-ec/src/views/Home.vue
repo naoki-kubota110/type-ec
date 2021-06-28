@@ -1,17 +1,19 @@
 <template>
 <v-app>
   <v-container>
-    <v-main align="center">
+    <v-main align="center" class="homeMain">
       <Search/>
+      <p class="hello">hello</p>
+      <input  type="text">
     </v-main>
-    <v-row v-if="flg" class="mt-5">
+    <v-row v-show="flg" class="mt-5">
       <v-col cpl="4" v-for="(item,index) in itemBox" :key="index" align="center">
-        <v-card id="item" elevation="5">
+        <v-card id="item" elevation="5" class="v-card">
           <router-link :to='{name: "ItemDetail", params: {id: item.id}}' id="router">
             <div>
-              <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="gray lighten-2"></v-img>
+              <v-img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="card-img gray lighten-2"></v-img>
             </div>
-            <div>
+            <div class="card-content">
               <v-card-title>
                 <p id="itemName">{{item.name}}</p>
               </v-card-title>
@@ -20,8 +22,8 @@
           <v-row>
             <v-spacer></v-spacer>
             <v-col cols="9">
-              <div>
-                <p>普通:{{item.priceM}}円  大盛り:{{item.priceL}}円</p>
+              <div class="card-content">
+                <p><strong>Short ¥{{item.priceM}}  Venti ¥{{item.priceL}}</strong></p>
               </div>
             </v-col>
           </v-row>
@@ -34,6 +36,7 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
+import { mapActions,mapState } from "vuex"
 import Search from '../components/Search.vue'
 @Component({
   components:{
@@ -41,12 +44,6 @@ import Search from '../components/Search.vue'
   },
 })
 export default class Home extends Vue{
-  created(){
-    this.$store.state.flg = true
-    this.$store.dispatch("fetchItem")
-    this.$store.dispatch("fetchToppings")
-    this.$store.dispatch("fetchCart")
-  }
   get itemBox(){
     return this.$store.state.items;
   }
@@ -58,32 +55,48 @@ export default class Home extends Vue{
 
 <style>
 #img{
- height:200px;
+ height:280px;
  width:300px;
  border-bottom: solid 0.5px gray;
  border-radius:10px 10px 0 0;
  background-color: white;
+ object-fit: cover !important;
 }
 #item{
-  height:325px;
+  height:390px;
   width:300px;
   border-radius: 10px;
   border: solid 0.5px gray;
-  background-color: antiquewhite;
+  background-color:#f4f2ef;
+  color:#3d3935;
 }
 #price{
   font-size: 25px;
 }
 #itemName{
-  color:black;
+  color:#3d3935;
   text-decoration: none;
   font-size: 18px;
   font-weight:bold;
 }
 #itemName:hover{
-  color:orange;
+  color:#0d5c35;
 }
 #router{
    text-decoration: none;
+}
+#btn{
+  color: #fff;
+}
+#card{
+  background-color:#f4f2ef;
+}
+#imgDetail{
+height:300px;
+ width:300px;
+ border-bottom: solid 0.5px gray;
+ border-radius:10px 10px 0 0;
+ background-color: white;
+ object-fit: cover !important;
 }
 </style>

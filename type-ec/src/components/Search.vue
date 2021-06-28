@@ -3,7 +3,7 @@
    <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
           <v-card>
-              <v-card-title>商品を検索する</v-card-title>
+              <v-card-title id="cardTitle">商品を検索する</v-card-title>
               <v-divider></v-divider>
               <v-card-text>
                 <v-form>
@@ -14,7 +14,7 @@
                       v-model="search_term"
                     ></v-text-field><p/>
                     <p v-if="show">{{errosMsg}}</p>
-                  <v-btn color="orange" dark @click="searchBtn">検索</v-btn>&nbsp;
+                  <v-btn color="#0d5c35"  @click="searchBtn">検索</v-btn>&nbsp;
                   <v-btn outlined @click="removeBtn">クリア</v-btn>
                   </div>
                 </v-form>
@@ -23,7 +23,7 @@
       </v-col>
   </v-row>
   <v-row v-if="showSearchItem">
-    <v-col  cpl="4" v-for="(item,index) in searchBox" :key="index" align="center">
+    <v-col  cpl="4" v-for="(item,index) in searchBox" :key="index" align="center" class="mt-5">
         <v-card id="item" elevation="5">
           <router-link :to='{name: "ItemDetail", params: {id: item.id}}' id="router">
           <div>
@@ -95,3 +95,6 @@ export default class Search extends Vue{
   }
 }
 </script>
+
+<style scoped>
+</style>

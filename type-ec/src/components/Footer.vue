@@ -1,8 +1,8 @@
 <template>
-  <v-footer color="#FFAB40" padless height="70px" dark>
+  <v-footer color="#0d5c35" padless height="70px" dark>
     <v-col class="py-4 text-center white--text" cols="12">
     Copyright©︎ {{ new Date().getFullYear() }} —
-    <strong>ラクラクカリー All Rights Reserved</strong>
+    <strong>ラクラクカフェ All Rights Reserved</strong>
   </v-col>
   </v-footer>
 </template>

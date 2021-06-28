@@ -3,14 +3,14 @@
   <div v-if="ordered.length !==0">
   <h1 class="text-center">注文履歴</h1>
   <v-row>
-    <v-simple-table class="mt-5">
+    <v-simple-table class="mt-5 mb-5">
       <template v-slot:default>
         <thead>
           <tr>
-            <th class="text-center">商品イメージ</th>
-            <th class="text-center">商品名、数量</th>
-            <th class="text-center">トッピング</th>
-            <th class="text-center">注文日時</th>
+            <th class="text-center"><big>商品イメージ</big></th>
+            <th class="text-center"><big>商品名、数量</big></th>
+            <th class="text-center"><big>トッピング</big></th>
+            <th class="text-center"><big>注文日時</big></th>
             <th class="text-center">ー</th>
           </tr>
         </thead>
@@ -18,14 +18,14 @@
           <tr v-for="(order,index) in ordered" :key="index">
             <td class="text-center"> 
               <div v-for="(it,index) in order.itemInfo" :key="index">
-                <p>【{{index + 1}}】{{it.name}}</p>
-                <img id="img" :src="require(`@/assets/img/${it.imagePath}`)"  alt="画" width="30" height="30" justify-center>
+                <p class="mt-2">【{{index + 1}}】{{it.name}}</p>
+                <img id="img" :src="require(`@/assets/img/${it.imagePath}`)" class="mb-1">
               </div>
             </td>
             <td class="text-center">
               <p v-for="(it,index) in order.itemInfo" :key="index">
-              【{{index + 1}}】{{it.name}}({{it.size === "M"? "並盛": "大盛"}}) × {{it.num}}皿<br>
-                小計：{{it.price * it.num}}円
+              【{{index + 1}}】{{it.name}}({{it.size === "M"? "Short": "Venti"}}) × {{it.num}}杯<br>
+                小計：{{it.price * it.num.toLocaleString('ja-JP')}}円
               </p>
             </td>
             <td class="text-center">
@@ -33,7 +33,7 @@
                 <div v-for="(topping,index) in it.toppings" :key="index">
                 【{{idx + 1}}】{{topping}}
                 </div>
-                <p v-if="it.toppings.length !== 0">小計：{{it.toppings.length * 200 * it.num}}</p>
+                <p v-if="it.toppings.length !== 0">小計：{{it.toppings.length * 50 * it.num}}円</p>
                 <p v-else>【{{idx + 1}}】トッピング無し</p>
               </div>
             </td>
@@ -50,7 +50,7 @@
   <div class="text-center" v-else>
     <h2 class="mt-5">注文履歴はありません</h2>
     <router-link to="/">
-      <v-btn  color="orange" dark rounded class="mt-5" id="router">トップページに戻る</v-btn>
+      <v-btn  color="#0d5c35" dark rounded class="mt-5" id="router">トップページに戻る</v-btn>
     </router-link>
   </div>
 </v-container>
@@ -59,14 +59,14 @@
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
 @Component({
+   created(){
+    this.$store.dispatch("fetchOrdered")
+  }
 })
 export default class OrderHistory extends Vue{
   get ordered(){
     let arry = this.$store.state.orders.reverse();
     return  arry
-  }
-  created(){
-    this.$store.dispatch("fetchOrdered")
   }
 }
 </script>

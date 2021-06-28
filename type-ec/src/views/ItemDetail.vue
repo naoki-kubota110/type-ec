@@ -1,45 +1,45 @@
 <template>
-<v-container>
+<v-container id="itemDetail">
 <v-layout row rap justify-center>
-    <v-row justify="center" class="ma-1 mt-5">
+    <v-row justify="center" class="ma-1 mt-5" id="card">
         <v-col justify="center" align="center">
-            <v-card flat>
-              <img :src="require(`@/assets/img/${itemDetail.imagePath}`)" id="img">
+            <v-card flat id="card">
+              <img :src="require(`@/assets/img/${itemDetail.imagePath}`)" id="imgDetail">
             </v-card>
         </v-col>
-        <v-col align="left" valign="middle">
-          <h2 class="ma-2 mt-5">{{itemDetail.name}}</h2><br/>
-          <h4>{{itemDetail.description}}</h4>
+        <v-col>
+          <h2 class="" id="detailTitle"><big>{{itemDetail.name}}</big></h2><br/>
+          <h3>{{itemDetail.description}}</h3>
         </v-col>
     </v-row>
     <v-row>
         <v-spacer></v-spacer> 
         <v-col cols="6" justify="center" align="left">
-          <v-main valign="middle">
-            <h4 style="font-weight : bold">サイズを選択</h4>  
+          <v-main valign="middle" id="detailMain">
+            <h3 style="font-weight : bold">サイズを選択</h3>  
             <v-radio-group row v-model="size">
-              <v-radio :label="'並盛 : ' + itemDetail.priceM.toLocaleString('ja-JP') + '円'" value="M" color="warning"></v-radio>
-               <v-radio :label="'大盛 : ' + itemDetail.priceL.toLocaleString('ja-JP') + '円'" value="L" color="warning"></v-radio>
+              <v-radio :label="'Short : ' + itemDetail.priceM.toLocaleString('ja-JP') + '円'" value="M" color="#0d5c35"></v-radio>
+               <v-radio :label="'Venti : ' +  itemDetail.priceL.toLocaleString('ja-JP')+ '円'" value="L" color="#0d5c35"></v-radio>
             </v-radio-group>
             <div>
-              <h4 style="font-weight : bold">数量を選択</h4>  
+              <h3 style="font-weight : bold">数量を選択</h3>  
               <v-select :items="items" v-model="selectNum"></v-select>
             </div>
           </v-main>
-           <h4 style="font-weight : bold">トッピングを選択（各200円）</h4>  
+           <h3 style="font-weight : bold">トッピングを選択（各50円）</h3>  
             <div id="checkbox">
               <div v-for="(topping,index) in toppings" :key="index" id="check">
-               <v-checkbox v-model="checkTopping" :label="topping.name" :value="topping.name" color="orange" id="check"></v-checkbox>
+               <v-checkbox v-model="checkTopping" :label="topping.name" :value="topping.name" color="#0d5c35" id="check"></v-checkbox>
               </div>
              </div>
             <div align="center">
               <h2>ご注文金額合計：{{size === "M"?
-                (itemDetail.priceM * selectNum) + (this.checkTopping.length * 200)
+                (itemDetail.priceM * selectNum) + (this.checkTopping.length * 50)
                   :
-                  (itemDetail.priceL * selectNum) + (this.checkTopping.length * 200)
+                  (itemDetail.priceL * selectNum) + (this.checkTopping.length * 50)
                   }}円(税込)</h2>
               <router-link :to="{name: 'CartItem'}" id="router">
-                <v-btn color="orange" dark @click="addCart" class="mb-5 mt-3">カートに入れる</v-btn>
+                <v-btn color="#0d5c35" dark @click="addCart" class="mb-5 mt-3">カートに入れる</v-btn>
               </router-link>
             </div>
         </v-col>
@@ -53,11 +53,11 @@ import { Component, Vue} from 'vue-property-decorator';
 import { newCart,addCart } from "@/types";
 
 @Component({
-  created(){
-    this.$store.dispatch("fetchItem")
-    this.$store.dispatch("fetchToppings")
-    this.$store.dispatch("fetchCart")
-  },
+  // created(){
+  //   this.$store.dispatch("fetchItem")
+  //   this.$store.dispatch("fetchToppings")
+  //   this.$store.dispatch("fetchCart")
+  // },
   computed:{
     itemDetail(){
     let itemdetail = ""
@@ -87,16 +87,16 @@ export default class ItemDetail extends Vue{
   private selectNum = 1
   public size = "M"
   items = [
-      {text:'1皿',value:1},
-      {text:'2皿',value:2},
-      {text:'3皿',value:3},
-      {text:'4皿',value:4},
-      {text:'5皿',value:5},
-      {text:'6皿',value:6},
-      {text:'7皿',value:7},
-      {text:'8皿',value:8},
-      {text:'9皿',value:9},
-      {text:'10皿',value:10},
+      {text:'1',value:1},
+      {text:'2',value:2},
+      {text:'3',value:3},
+      {text:'4',value:4},
+      {text:'5',value:5},
+      {text:'6',value:6},
+      {text:'7',value:7},
+      {text:'8',value:8},
+      {text:'9',value:9},
+      {text:'10',value:10},
     ]
   private price:number = null
   private checkTopping = []
@@ -140,7 +140,13 @@ export default class ItemDetail extends Vue{
   }
 }
 </script>
-<style>
+<style scoped>
+#card{
+  padding-top:20px;
+}
+#detailTitle{
+  margin-top: 30px;
+}
 #checkbox{
   display:flex !important;
   width: 100%;
@@ -149,17 +155,11 @@ export default class ItemDetail extends Vue{
 #check{
   width: 180px;
 }
+#itemDetail{
+  background-color:#f4f2ef;
+  width: 100%
+}
+.v-main{
+  padding: 0px 0px 0px !important
+}
 </style>
-    // if(this.$store.getters.orderId === null){
-    //   this.$store.dispatch("newCart",cartItem)
-    // }else{
-    //   const copy = this.$store.getters.cart
-    //   const info = [...copy,cartItem.itemInfo[0]]
-    //   const addCartItem:addCart = {
-    //     id: this.$store.state.cart.id,
-    //     orderId: this.$store.getters.orderId,
-    //     status: 0,
-    //     itemInfo: info
-    //   }
-    //   this.$store.dispatch("addCart", addCartItem)
-    // }

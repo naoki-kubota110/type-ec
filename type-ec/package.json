@@ -6,7 +6,25 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "jest"
+  },
+  "jest": {
+    "testRegex": "(/__tests__/.*|(\\.|/)(spec))\\.(vue|ts)$",
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "json",
+      "vue"
+    ],
+    
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testURL": "http://localhost/",
+    "moduleNameMapper": {
+      "src(.*)$": "<rootDir>/src/$1"
+    }
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -20,7 +38,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.19",
+    "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "^4.5.0",
@@ -30,16 +48,23 @@
     "@vue/cli-service": "^4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "@vue/test-utils": "^1.0.3",
+    "@vue/test-utils": "^1.2.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^27.0.5",
     "eslint": "^6.8.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^27.0.5",
+    "jsdom": "^16.6.0",
+    "jsdom-global": "^3.0.2",
     "prettier": "^2.2.1",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
+    "ts-jest": "^27.0.3",
     "typescript": "~4.1.5",
     "vue-cli-plugin-vuetify": "^2.4.1",
+    "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
   }

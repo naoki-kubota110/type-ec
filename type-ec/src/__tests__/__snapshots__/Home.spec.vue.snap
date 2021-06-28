@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Counter is a Vue instance 1`] = `
+"<div data-app=\\"true\\" class=\\"v-application v-application--is-ltr theme--light\\" id=\\"app\\">
+  <div class=\\"v-application--wrap\\">
+    <div class=\\"container\\">
+      <main class=\\"v-main\\" style=\\"padding: 0px 0px 0px 0px;\\" align=\\"center\\">
+        <div class=\\"v-main__wrap\\">
+          <div class=\\"container\\">
+            <div class=\\"row justify-center\\">
+              <div class=\\"col-sm-10 col-md-8 col-lg-6 col-12\\">
+                <div class=\\"v-card v-sheet theme--light\\">
+                  <div id=\\"cardTitle\\" class=\\"v-card__title\\">商品を検索する</div>
+                  <hr role=\\"separator\\" aria-orientation=\\"horizontal\\" class=\\"v-divider theme--light\\">
+                  <div class=\\"v-card__text\\">
+                    <form novalidate=\\"novalidate\\" class=\\"v-form\\">
+                      <div align=\\"center\\">
+                        <div class=\\"v-input v-input--hide-details theme--light v-text-field\\">
+                          <div class=\\"v-input__control\\">
+                            <div class=\\"v-input__slot\\">
+                              <div class=\\"v-text-field__slot\\"><label for=\\"input-8\\" class=\\"v-label theme--light\\" style=\\"left: 0px; position: absolute;\\">商品名 or キーワードで検索</label><input id=\\"input-8\\" type=\\"text\\"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <p></p>
+                        <!----> <button type=\\"button\\" class=\\"v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default\\" style=\\"background-color: rgb(61, 57, 53); border-color: #3d3935;\\"><span class=\\"v-btn__content\\">検索</span></button>&nbsp;
+                        <button type=\\"button\\" class=\\"v-btn v-btn--outlined theme--light v-size--default\\"><span class=\\"v-btn__content\\">クリア</span></button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!---->
+          </div>
+        </div>
+      </main>
+      <!---->
+    </div>
+  </div>
+</div>"
+`;

@@ -1,13 +1,15 @@
 <template>
   <v-app>
     <v-container text-xs-center>
+      <p class="font-weight-bold text-center mt-5">
+        <big>お届け先情報</big>
+      </p>
+      <div v-if="userInfo" class="text-center">
+        <v-checkbox label="前回の入力情報を呼び出す" color="#3d3935" @change="changeCheck" id="fetchUserInfo"  justify="center"></v-checkbox>
+      </div>
       <v-layout row wrap justify-center>
         <v-flex xs6 mt-6>
           <v-form ref="form" v-model="valid" lazy-validation>
-            <p class="font-weight-bold text-center"><big>お届け先情報</big></p>
-            <div v-if="userInfo" >
-              <v-checkbox label="前回の入力情報を呼び出す" color="orange" @change="changeCheck" ></v-checkbox>
-            </div>
             <div>
               お名前<v-text-field v-model="name" :rules="[rules.required]"></v-text-field>
             </div>
@@ -37,8 +39,8 @@
             </div>
             <div>
             <v-radio-group row v-model="pay">
-              <v-radio label="代金引換" :value=1 color="warning"></v-radio>
-               <v-radio label="クレジットカード" :value=2 color="warning"></v-radio>
+              <v-radio label="代金引換" :value=1 color="#3d3935"></v-radio>
+               <v-radio label="クレジットカード" :value=2 color="#3d3935"></v-radio>
             </v-radio-group>
             </div>
             <div v-if="pay === 2">
@@ -46,7 +48,7 @@
             </div>
             <v-row justify="center">
               <v-col cols="4">
-                <v-btn rounded class="orange" dark @click="orderBtn">注文する</v-btn>
+                <v-btn rounded class="#3d3935" dark @click="orderBtn">注文する</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -66,7 +68,7 @@ export default class Order extends Vue{
     private zipcode = ""
     private address = ""
     private tel = ""
-    private pay = null
+    private pay = 1
     private date = ""
     private credit = ""
     private valid = true
@@ -209,3 +211,8 @@ export default class Order extends Vue{
   }
 }
 </script>
+<style scoped>
+#fetchUserInfo{
+  text-align: center;
+}
+</style>
