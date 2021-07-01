@@ -1,7 +1,7 @@
 <template>
 <v-container>
   <div v-if="cartLength">
-  <h1 class="text-center">ショッピングカート</h1>
+  <h2 class="text-center"><v-icon>mdi-cart</v-icon>ショッピングカート</h2>
   <v-simple-table class="mt-5">
       <template v-slot:default>
         <thead id="thead">
@@ -11,7 +11,7 @@
             <th class="text-center"><big>サイズ</big></th>
             <th class="text-center"><big>個数</big></th>
             <th class="text-center"><big>価格（税込）</big></th>
-            <th class="text-center"><big>トッピング</big></th>
+            <th class="text-center"><big>トッピング（各50円）</big></th>
             <th class="text-center"><big>小計（税込）</big></th>
             <th class="text-center"><big>ー</big></th>
           </tr>
@@ -19,7 +19,7 @@
         <tbody>
           <tr v-for="(item,index) in cartInfo" :key="index">
             <td class="text-center"> 
-              <img :src="require(`@/assets/img/${item.imagePath}`)" id="img" class="mt-3 mb-3">
+              <img :src="require(`@/assets/img/${item.imagePath}`)" id="imgCart" class="mt-3 mb-3">
             </td>
             <td class="text-center">{{ item.name }}</td>
             <td class="text-center">
@@ -33,7 +33,13 @@
             </td>
             <td class="text-center">
               <div v-for="(topping,index) in item.toppings" :key="index">
-              {{ item.toppings.length !==0 ? topping : '無し'}}
+                <p v-if="item.toppings.length !==0">
+                  {{topping}}
+                </p>
+                <p v-else>
+                  無し
+                </p>
+              <!-- {{ item.toppings.length !==0 ? topping : "無し"}} -->
               </div>
             </td>
             <td class="text-center">
@@ -50,17 +56,21 @@
       </template>
     </v-simple-table>
     <div align="center" class="mt-5">
-        <h2>内消費税：{{tax.toLocaleString('ja-JP')}}円</h2>
         <h2>ご注文金額合計：{{sumPrice.toLocaleString('ja-JP')}}円(税込)</h2>
+        <h2>内消費税：{{tax.toLocaleString('ja-JP')}}円</h2>
         <v-btn class="mt-5" v-if="!showorder" color="#0d5c35" dark rounded href="#orderForm" @click="showOrder">注文に進む</v-btn>
         <v-btn v-if="showorder" rounded color="#0d5c35" dark class="mt-5" @click="showOrder">閉じる</v-btn>
     </div>
-    <div v-show="showorder">
-      <Order/>
-    </div>
+    <transition>
+      <div v-show="showorder">
+        <Order/>
+      </div>
+    </transition>
+
   </div>
-  <div v-else class="text-center">
-    <h2 class="mt-5">カートに商品がありません{{itemArray}}</h2>
+  <div v-else class="text-center" id="emptyCart">
+    <img src="../../public/img/cartEmpty.png" id="cartImg">
+    <h2 class="mt-5">カートに商品がありません。</h2>
     <router-link to="/" id="router">
       <v-btn color="#0d5c35" dark rounded class="mt-5">トップページに戻る</v-btn>
     </router-link>
@@ -81,15 +91,7 @@ export default class CartItem extends Vue{
   private showorder = false
 
   created(){
-  //   firebase.auth().onAuthStateChanged(user=> {
-  //     if(user){
-  //       console.log(user)
-  //       this.$store.dispatch("setLoginUser",user)
-  //     }else{
-  //       this.$store.dispatch("setLogoutUser",user)
-  //     }
-  //   })
-  //  this.$store.dispatch("fetchCart",this.userId)
+    this.$store.dispatch("fetchCart")
   }
 
   get itemArray(){
@@ -100,7 +102,7 @@ export default class CartItem extends Vue{
     }
   }
   get cartInfo(){
-    return this.$store.getters.cart
+    return this.$store.state.cart.itemInfo
   }
   get cartLength(){
     if(this.$store.getters.cart === null){
@@ -137,8 +139,30 @@ export default class CartItem extends Vue{
   }
 }
 </script>
-<style scoped>
+<style>
 #thead{
   background: #DDDDDD;
+}
+#imgCart{
+  height: 150px;
+  width: 150px;
+}
+#emptyCart{
+  margin-top: 50px;
+}
+#cartImg{
+  width: 400px;
+}
+.v-enter,
+.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,
+.v-leave{
+ opacity: 1;
+}
+.v-enter-active,
+.v-leave-active{
+transition: opacity 1s;
 }
 </style>

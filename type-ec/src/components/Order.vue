@@ -4,8 +4,8 @@
       <p class="font-weight-bold text-center mt-5">
         <big>お届け先情報</big>
       </p>
-      <div v-if="userInfo" class="text-center">
-        <v-checkbox label="前回の入力情報を呼び出す" color="#3d3935" @change="changeCheck" id="fetchUserInfo"  justify="center"></v-checkbox>
+      <div v-if="userInfo" class="text-center" id="fetchUserInfo">
+        <v-checkbox label="前回の入力情報を呼び出す" color="#3d3935" @change="changeCheck"></v-checkbox>
       </div>
       <v-layout row wrap justify-center>
         <v-flex xs6 mt-6>
@@ -60,9 +60,18 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
+import draggable from "vuedraggable";
 @Component({
+  components: {
+    draggable
+  },
 })
 export default class Order extends Vue{
+  lists = [
+    {name: "apple"},
+    {name: "banana"},
+    {name: "grape"}
+  ]
   private name = ""
     private email = ""
     private zipcode = ""
@@ -165,7 +174,7 @@ export default class Order extends Vue{
       const orderDate = orderDay.getDate()
       const orderHour = orderDay.getHours()
       const orderMinits = orderDay.getMinutes()
-      const orderTime =String(orderYear) + "年" + String(orderMonth) + "月" + String(orderDate) + "日" + String(orderHour) + "時" + String(orderMinits) + "分" 
+      const orderTime =String(orderYear) + "-" + String(orderMonth) + "-" + String(orderDate) + "-" + String(orderHour) + ":" + String(orderMinits) + "分" 
       let status;
       if(this.pay === 1){
         status = 1
@@ -213,6 +222,7 @@ export default class Order extends Vue{
 </script>
 <style scoped>
 #fetchUserInfo{
-  text-align: center;
+ text-align: center !important;
 }
+
 </style>

@@ -3,7 +3,6 @@
   <v-container>
     <v-main align="center" class="homeMain">
       <Search/>
-      <p class="hello">hello</p>
       <input  type="text">
     </v-main>
     <v-row v-show="flg" class="mt-5">
@@ -40,7 +39,7 @@ import { mapActions,mapState } from "vuex"
 import Search from '../components/Search.vue'
 @Component({
   components:{
-    Search
+    Search,
   },
 })
 export default class Home extends Vue{
@@ -49,6 +48,9 @@ export default class Home extends Vue{
   }
   get flg(){
     return this.$store.state.flg
+  }
+  created(){
+    this.$store.state.flg = true
   }
 }
 </script>

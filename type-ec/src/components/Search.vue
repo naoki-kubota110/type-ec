@@ -14,7 +14,7 @@
                       v-model="search_term"
                     ></v-text-field><p/>
                     <p v-if="show">{{errosMsg}}</p>
-                  <v-btn color="#0d5c35"  @click="searchBtn">検索</v-btn>&nbsp;
+                  <v-btn color="#0d5c35"  @click="searchBtn" id="searchBtn">検索</v-btn>&nbsp;
                   <v-btn outlined @click="removeBtn">クリア</v-btn>
                   </div>
                 </v-form>
@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
-import { itemList} from "@/types";
+import { itemList} from "../types/index";
 
 @Component({
 })
@@ -97,4 +97,7 @@ export default class Search extends Vue{
 </script>
 
 <style scoped>
+#searchBtn{
+  color: #fff;
+}
 </style>

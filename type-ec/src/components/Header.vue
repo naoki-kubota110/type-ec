@@ -1,11 +1,10 @@
 <template>
 <v-app-bar app color="#0d5c35">
   <v-app-bar-nav-icon @click="sideNav">
-    <v-icon>mdi-menu</v-icon>
+    <v-icon id="menu">mdi-menu</v-icon>
   </v-app-bar-nav-icon>
   <v-toolbar-title>
-    <router-link to="/" id="router"><img src="" id="headerImg"></router-link>
-    <!-- ../../public/img/hoshino.png -->
+    <router-link to="/" id="router"><img src="../../public/img/stb.jpg" id="headerImg"></router-link>
   </v-toolbar-title>
   <v-spacer></v-spacer>
   <div v-if="$store.getters.uid">
@@ -51,5 +50,8 @@ export default class Header extends Vue{
   width: 250px;
   height:40px;
   margin-top: 5px;
+}
+#menu{
+  color:#fff;
 }
 </style>

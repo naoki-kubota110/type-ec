@@ -53,11 +53,6 @@ import { Component, Vue} from 'vue-property-decorator';
 import { newCart,addCart } from "@/types";
 
 @Component({
-  // created(){
-  //   this.$store.dispatch("fetchItem")
-  //   this.$store.dispatch("fetchToppings")
-  //   this.$store.dispatch("fetchCart")
-  // },
   computed:{
     itemDetail(){
     let itemdetail = ""
@@ -123,11 +118,12 @@ export default class ItemDetail extends Vue{
       alert("ログインしてください")
       this.$store.dispatch("login")
     }else if(this.$store.state.cart === null){
-      console.log("new")
+      console.log("newcart")
       this.$store.dispatch("newCart",cartItem)
     }else{
-      console.log("add")
-      const copy = this.$store.getters.cart
+      console.log("addcart")
+      const copy = 
+      this.$store.getters.cart
       const info = [...copy,cartItem.itemInfo[0]]
       const addCartItem:addCart = {
         id: this.$store.state.cart.id,
@@ -154,10 +150,6 @@ export default class ItemDetail extends Vue{
 }
 #check{
   width: 180px;
-}
-#itemDetail{
-  background-color:#f4f2ef;
-  width: 100%
 }
 .v-main{
   padding: 0px 0px 0px !important

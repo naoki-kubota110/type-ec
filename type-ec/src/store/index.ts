@@ -8,6 +8,7 @@ Vue.use(Vuex);
 interface stateType {
   drawer: boolean,
   flg: boolean,
+  loading: boolean,
   user: any,
   items: itemList[],
   toppings: toppingList[],
@@ -20,6 +21,7 @@ export default new Vuex.Store({
   state: {
     drawer: false,
     flg:true,
+    loading: true,
     user: null,
     items : [],
     toppings:[],
@@ -40,6 +42,7 @@ export default new Vuex.Store({
     },
     fetchItem(state,itemArray:itemList[]){
       state.items= itemArray
+      state.loading = false
     },
     fetchTopping(state,toppingArray:toppingList[]){
       state.toppings  = toppingArray
@@ -70,6 +73,9 @@ export default new Vuex.Store({
     },
     fetchOrdered(state, orderArray:orders[]){
       state.orders = orderArray
+    },
+    setOrdered(state, val){
+      state.orders = val
     }
   },
   
@@ -206,6 +212,7 @@ export default new Vuex.Store({
     orderId: (state) => (state.cart? state.cart.orderId : null),
     cart : (state) => (state.cart? state.cart.itemInfo : null),
     userInfo: state => state.userInfo? state.userInfo: null,
-    userInfoId :state=> state.userInfo? state.userInfo.id: null
+    userInfoId :state=> state.userInfo? state.userInfo.id: null,
+    orders : state => state.orders? state.orders : null
   },
 });
