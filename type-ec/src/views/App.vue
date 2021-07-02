@@ -6,7 +6,10 @@
       <div class="text-center" id="loading" v-if="loading">
         <Loading/>
       </div>
+      <div v-else>
       <router-view/>
+
+      </div>
     </v-main>
     <Footer/>
   </v-app>

@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue} from 'vue-property-decorator';
+import { Component, Vue,Prop} from 'vue-property-decorator';
 import { mapActions,mapState } from "vuex"
 import Search from '../components/Search.vue'
 @Component({
@@ -43,10 +43,11 @@ import Search from '../components/Search.vue'
   },
 })
 export default class Home extends Vue{
+  @Prop()
   get itemBox(){
     return this.$store.state.items;
   }
-  get flg(){
+  get flg():boolean{
     return this.$store.state.flg
   }
   created(){

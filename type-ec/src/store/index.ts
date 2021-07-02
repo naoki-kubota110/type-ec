@@ -147,6 +147,7 @@ export default new Vuex.Store({
         })
       }
     },
+    // let commit = ctx.commit
     addCart({commit,getters},addCartItem:cart){
       if(getters.uid){
         firebase.firestore().collection(`users/${getters.uid}/orders`).doc(`${getters.orderId}`).update(addCartItem).then(() => {
