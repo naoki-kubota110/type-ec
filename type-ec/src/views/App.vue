@@ -1,14 +1,13 @@
 <template>
   <v-app>
-    <Header></Header>
-    <SideNav id="side"></SideNav>
-    <v-main id="main">
+    <Header @sidenav="sideNav" @login="login" @logout="logout"/>
+    <!-- <SideNav :userName="userName()" :photoURL="photoURL()" :uid="uid()" :drawer="drawer"/> -->
+    <v-main>
       <div class="text-center" id="loading" v-if="loading">
         <Loading/>
       </div>
       <div v-else>
-      <router-view/>
-
+        <router-view/>
       </div>
     </v-main>
     <Footer/>
@@ -17,12 +16,12 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
-import SideNav from '../components/SideNav.vue'
-import Loading from '../components/Loading.vue'
+import Header from '../components/AppContents/Header.vue'
+import Footer from '../components/AppContents/Footer.vue'
+import SideNav from '../components/AppContents/SideNav.vue'
+import Loading from '../components/AppContents/Loading.vue'
 import firebase from 'firebase'
-import { mapActions,mapState,mapGetters } from "vuex"
+import { mapActions,mapGetters } from "vuex"
 
 @Component({
   components: {
@@ -32,8 +31,8 @@ import { mapActions,mapState,mapGetters } from "vuex"
     Loading
   },
   methods:{
-     ...mapActions(["fetchItem","fetchToppings","fetchCart","fetchOrdered"]),
-     ...mapGetters(["flg"])
+    ...mapActions(["sideNav","login","setLoginUser", "setLogoutUser","logout","fetchItem","fetchToppings"]),
+     ...mapGetters(["userName","photoURL","uid"])
   },
   created(){
     this.fetchItem()
@@ -45,18 +44,23 @@ import { mapActions,mapState,mapGetters } from "vuex"
         this.setLogoutUser()
       }
     })
-  }
+    // this.$store.dispatch("fetchCart")
+    // console.log("app fetch")
+  },
 })
 export default class App extends Vue{
-  get loading(){
+  get loading():boolean{
     return this.$store.state.loading
   }
+  get drawer(){
+    return this.$store.state.drawer
+  }
+  // showSide(){
+  //   this.$store.dispatch("sideNav")
+  // }
 }
 </script>
 <style>
-#app{
- /* background-color:#f4f2ef; */
-}
 #loading{
   margin-top:200px;
 }

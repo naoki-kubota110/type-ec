@@ -74,7 +74,6 @@ import { Component, Vue} from 'vue-property-decorator';
 })
 export default class OrderHistory extends Vue{
   get ordered(){
-    // let arry = this.$store.state.orders.reverse();
     return  this.$store.state.orders
   }
 }

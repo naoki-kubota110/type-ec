@@ -50,9 +50,12 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
-import { newCart,addCart } from "@/types";
+import { newCart,addCart } from "../types/index";
+import ItemDetailContent from "../components/itemDetail/ItemDetailContent.vue"
 
 @Component({
+  components:{
+  },
   computed:{
     itemDetail(){
     let itemdetail = ""
@@ -121,7 +124,6 @@ export default class ItemDetail extends Vue{
       console.log("newcart")
       this.$store.dispatch("newCart",cartItem)
     }else{
-      console.log("addcart")
       const copy = 
       this.$store.getters.cart
       const info = [...copy,cartItem.itemInfo[0]]
@@ -137,6 +139,17 @@ export default class ItemDetail extends Vue{
 }
 </script>
 <style scoped>
+#imgDetail{
+height:300px;
+ width:300px;
+ border-bottom: solid 0.5px gray;
+ border-radius:10px 10px 0 0;
+ background-color: white;
+ object-fit: cover !important;
+}
+#router{
+   text-decoration: none;
+}
 #card{
   padding-top:20px;
 }

@@ -6,6 +6,7 @@ import router from "@/router";
 Vue.use(Vuex);
 
 interface stateType {
+  sum:number,
   drawer: boolean,
   flg: boolean,
   loading: boolean,
@@ -19,6 +20,7 @@ interface stateType {
 
 export default new Vuex.Store({
   state: {
+    sum:0,
     drawer: false,
     flg:true,
     loading: true,
@@ -32,6 +34,7 @@ export default new Vuex.Store({
   
   mutations: {
     sideNav(state){
+      console.log("sidenav")
       state.drawer = !state.drawer
     },
     setLoginUser(state, user){
@@ -49,6 +52,7 @@ export default new Vuex.Store({
     },
     fetchCart(state,cartItem:cart){
       state.cart = cartItem
+      console.log(state.cart)
     },
     newCart(state, cartItem:cart){
       state.cart = cartItem
@@ -90,7 +94,7 @@ export default new Vuex.Store({
     login(){
       const google_auth_provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(google_auth_provider)
-      router.push("/")
+      router.push('/', () => {})
     },
     setLogoutUser({commit}){
       commit("setLogoutUser")
@@ -98,11 +102,10 @@ export default new Vuex.Store({
     logout(){
       alert("ログアウトしますか？")
       firebase.auth().signOut()
-      router.push("/")
+      router.push('/', () => {})
     },
     //アイテム・トッピングの取得
     fetchItem({commit}){
-      console.log("action")
       firebase.firestore().collection(`items`).get().then
       (snapshot => {
         const itemArray :Array<itemList> = []
@@ -212,6 +215,14 @@ export default new Vuex.Store({
     flg: state => state.flg,
     orderId: (state) => (state.cart? state.cart.orderId : null),
     cart : (state) => (state.cart? state.cart.itemInfo : null),
+    sumPrice: (state,getters) => 
+    {return getters.cart.forEach(item=> {
+      state.sum += ((item.price * Number(item.num)) + (item.toppings.length * 50 * item.num))
+    })
+    return state.sum
+
+  
+  },
     userInfo: state => state.userInfo? state.userInfo: null,
     userInfoId :state=> state.userInfo? state.userInfo.id: null,
     orders : state => state.orders? state.orders : null

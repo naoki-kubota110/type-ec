@@ -163,9 +163,6 @@ export default class Order extends Vue{
       this.credit = ""
     }
   }
-  created(){
-    this.$store.dispatch("fetchUserInfo")
-  }
   orderBtn(){
     if(this.$refs.form.validate() && this.dateMsg===""){
       const orderDay = new Date()
