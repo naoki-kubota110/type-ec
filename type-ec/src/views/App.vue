@@ -16,10 +16,10 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
-import Header from '../components/AppContents/Header.vue'
-import Footer from '../components/AppContents/Footer.vue'
-import SideNav from '../components/AppContents/SideNav.vue'
-import Loading from '../components/AppContents/Loading.vue'
+import Header from '../components/app/Header.vue'
+import Footer from '../components/app/Footer.vue'
+import SideNav from '../components/app/SideNav.vue'
+import Loading from '../components/app/Loading.vue'
 import firebase from 'firebase'
 import { mapActions,mapGetters } from "vuex"
 

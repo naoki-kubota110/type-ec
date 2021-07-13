@@ -14,7 +14,11 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "ts-jest",
+      "@types/jest",
+      "node"
+
     ],
     "paths": {
       "@/*": [
@@ -29,6 +33,7 @@
     ]
   },
   "include": [
+    "__tests__",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
@@ -37,7 +42,7 @@
     "src/__tests__/**/*.vue"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }
 // {

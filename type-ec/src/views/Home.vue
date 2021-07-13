@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Search :defaultItems="items" @change-flg-false="changeFalse()" @change-flg-true="changeTrue()"/>
+  <Search :defaultItems="items" @change-flg-false="changeFalse()" @change-flg-true="changeTrue()"/>
 　<HomeContent :items="items" :flg="flg"/>
   </div>
 </template>

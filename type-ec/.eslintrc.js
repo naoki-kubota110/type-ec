@@ -16,13 +16,15 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    'vue/no-unused-components': 'off'
+    'vue/no-unused-components': 'off',
   },
   overrides: [
     {
       files: [
         "**/__tests__/*.{j,t}s?(x)",
         "**/tests/unit/**/*.spec.{j,t}s?(x)",
+        "**/__tests__/*.vue?(x)",
+        "**/tests/unit/**/*.spec.vue?(x)",
       ],
       env: {
         jest: true,

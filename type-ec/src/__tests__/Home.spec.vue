@@ -1,45 +1,31 @@
 <script lang="ts">
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-import Home from 'views/Home.vue';
-import VueRouter from 'vue-router'
+import Vue from "vue"
+import Vuetify from "vuetify"
+import HomeContent from "../components/home/Content.vue";
+// imprt VueRouter from "vue-router"
 import { createLocalVue, mount,RouterLinkStub } from '@vue/test-utils'
-import assert from 'assert'
+import {describe, expect, it,beforeEach} from '@jest/globals'
 Vue.use(Vuetify)
-const localVue = createLocalVue()
-localVue.use(VueRouter)
-const router = new VueRouter()
 
-
-describe('Counter', () => {
+describe('Homeコンポーネントのテスト', () => {
   const localVue = createLocalVue()
   let vuetify
    beforeEach(() => {
     vuetify = new Vuetify()
   })
+  const wrapper = mount(HomeContent,{
+      localVue,
+      vuetify
+    });
   it('v-cartタグの数が１つかの確認', () => {
-    const wrapper = mount(Home,{
-      localVue,
-      vuetify
-    });
-    expect(wrapper.findAll('.v-card').length).toEqual(1)
+    // expect(wrapper.contains('.card-content')).toBe(true)
+    expect(wrapper.element).toMatchSnapshot();
   });
-  it('card-contentが3つ存在しているのかの確認', () => {
-    const wrapper = mount(Home,{
-      localVue,
-      vuetify
-    });
+  it("card-contentが存在しているのかの確認", () => {
     expect(wrapper.findAll('.homeMain').length).toEqual(1)
   });
   it('v-showがtrueにっているのかの確認', () => {
-    const wrapper = mount(Home,{
-      localVue,
-      vuetify
-    });
     expect(wrapper.isVisible()).toBeTruthy();
   });
 });
-
-
-
 </script>
