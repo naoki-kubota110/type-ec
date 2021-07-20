@@ -1,11 +1,11 @@
 <template>
-  <v-navigation-drawer v-model="$store.state.drawer" absolute temporary>
+  <v-navigation-drawer v-model="drawer" absolute temporary>
     <v-list>
       <v-list-item>
         <div><h4>メニュー</h4></div>
       </v-list-item>
       <v-divider></v-divider>
-      <div v-if="$store.getters.uid">
+      <div v-if="uid">
         <v-list>
           <v-list-item>
             <v-list-item-avatar>
@@ -38,26 +38,24 @@
   </v-navigation-drawer>
 </template>
 
-
 <script lang="ts">
-import { Component, Vue} from 'vue-property-decorator';
-import { mapGetters } from "vuex"
-import {navItem} from '../types/index'
+import { Component, Vue, Prop} from 'vue-property-decorator';
+import {navItem} from '../../types/index'
 @Component({
-  computed: {
-    ...mapGetters(["userName", "photoURL"]),
-  }
 })
 export default class SideNav extends Vue{
+  @Prop() private userName!: string
+  @Prop() private photoURL!:any
+  @Prop() private uid!:string
+  @Prop() private drawer!:boolean
+  
   loginItems :navItem[] = [
     {name:'ホーム',icon:'mdi-home',link:'/'},
-    {name:'カート',icon:'mdi-cart',link:'/'},
-    {name:'注文履歴',icon:'mdi-playlist-check',link:'/'}
+    {name:'カート',icon:'mdi-cart',link:'/cartitem'},
+    {name:'注文履歴',icon:'mdi-playlist-check',link:'/orderhistory'}
   ]
   logoutItems : navItem[] = [
     {name:'ホーム',icon:'mdi-home',link:'/'},
-    {name:'カート',icon:'mdi-cart',link:'/'},
   ]
 }
-
 </script>

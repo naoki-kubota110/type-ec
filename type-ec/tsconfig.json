@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -14,7 +14,11 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "ts-jest",
+      "@types/jest",
+      "node"
+
     ],
     "paths": {
       "@/*": [
@@ -29,13 +33,21 @@
     ]
   },
   "include": [
+    "__tests__",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/__tests__/**/*.ts",
+    "src/__tests__/**/*.tsx",
+    "src/__tests__/**/*.vue"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }
+// {
+//   "compilerOptions": {
+//     "esModuleInterop": true,
+//     "target": "es6"
+//   }
+// }
